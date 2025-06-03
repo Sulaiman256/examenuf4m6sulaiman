@@ -37,11 +37,10 @@ export default function Detalle({ movieId, onClose }) {
         if (movieId) {
             fetchDetalle();
         }
-    }, [movieId]);     
-     const cast = detalle?.credits?.cast?.slice(0, 8).map(actor => ({
+    }, [movieId]);       const cast = detalle?.credits?.cast?.map(actor => ({
         name: actor.name,
         character: actor.character,
-        image: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "No disponible"
+        image: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "vercel.svg"
     })) || [];
 
     if (loading) {
@@ -77,7 +76,27 @@ export default function Detalle({ movieId, onClose }) {
                 <p>No se encontraron detalles de la película</p>
             </div>
         );
-    }    return (
+    }    
+
+    const favoritos = () => {
+        const peliculasFavoritas = JSON.parse(localStorage.getItem('favoritos')) || [];
+        if (!peliculasFavoritas.some(fav => fav.id === detalle.id)) {
+            peliculasFavoritas.push({
+                id: detalle.id,
+                title: detalle.title,
+                poster_path: detalle.poster_path,
+                backdrop_path: detalle.backdrop_path,
+                overview: detalle.overview,
+                release_date: detalle.release_date,
+                vote_average: detalle.vote_average,
+                genres: detalle.genres
+            });
+            localStorage.setItem('favoritos', JSON.stringify(peliculasFavoritas));
+            alert("Película añadida a favoritos");
+        }
+    }
+    
+    return (
         <div className="h-screen bg-black text-white overflow-y-auto relative">
           <div className="absolute top-4 right-4 z-20">
             <button 
@@ -86,11 +105,9 @@ export default function Detalle({ movieId, onClose }) {
             >
               Cerrar
             </button>
-          </div>
-
-          <div className="relative h-64 overflow-hidden">
+          </div>          <div className="relative h-64 overflow-hidden">
             <Image 
-                src={detalle.backdrop_path ? `https://image.tmdb.org/t/p/w1280${detalle.backdrop_path}` : "/placeholder.svg"} 
+                src={detalle.backdrop_path ? `https://image.tmdb.org/t/p/w1280${detalle.backdrop_path}` : "vercel.svg"} 
                 alt={detalle.title || "Imagen de fondo"} 
                 fill 
                 className="object-cover" 
@@ -102,7 +119,7 @@ export default function Detalle({ movieId, onClose }) {
             <div className="mb-4">
               <h1 className="text-2xl font-bold mb-3">{detalle.title}</h1>
               <div className="flex gap-2 mb-4">
-                <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-lg transition-colors text-sm">
+                <button onClick={favoritos} className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-lg transition-colors text-sm">
                   Añadir a Favoritos
                 </button>
                 <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-lg transition-colors text-sm">
