@@ -84,7 +84,12 @@ export default function Detalle({ movieId, onClose }) {
             peliculasFavoritas.push({
                 id: detalle.id,
                 title: detalle.title,
-                poster_path: detalle.poster_path
+                poster_path: detalle.poster_path,
+                backdrop_path: detalle.backdrop_path,
+                overview: detalle.overview,
+                release_date: detalle.release_date,
+                vote_average: detalle.vote_average,
+                genres: detalle.genres
             });
             localStorage.setItem('favoritos', JSON.stringify(peliculasFavoritas));
             alert("Película añadida a favoritos");
