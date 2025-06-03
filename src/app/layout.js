@@ -18,11 +18,27 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header>
+          <nav className="bg-gray-800 p-4">
+            <div className="container mx-auto">
+              <h1 className="text-white text-2xl">Examen UF4 M6 Sulaiman El Taha Santos</h1>
+            </div>
+          </nav>
+        </header>
+        <main>
         {children}
+        </main>
+
+        <footer className="bg-gray-800 p-4 mt-8">
+          <div className="container mx-auto text-center text-white">
+            <p>&copy; 2025 Sulaiman El Taha Santos</p>
+          </div>
+        </footer>
+     
       </body>
     </html>
   );
