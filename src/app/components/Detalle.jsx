@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function Detalle({ movieId, onClose }) {    
+export default function Detalle({ movieId, onClose, onFavoritoAgregado }) {    
     const BASE_URL = "https://api.themoviedb.org/3"
     const API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OTEwNGFiNGJhOTMxOWZjZTNmNjE5MjUxOWUyYzU2MiIsIm5iZiI6MTc0Nzc2MDIwOC44MzcsInN1YiI6IjY4MmNiNDUwNTIxMWE5MTRmMjhjMGQ4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.neOHz3fEzVRWUHM25S9GXs6JyIbp3rULJuaV_fuPjmg"
     const [detalle, setDetalle] = useState(null);
@@ -76,9 +76,7 @@ export default function Detalle({ movieId, onClose }) {
                 <p>No se encontraron detalles de la película</p>
             </div>
         );
-    }    
-
-    const favoritos = () => {
+    }        const favoritos = () => {
         const peliculasFavoritas = JSON.parse(localStorage.getItem('favoritos')) || [];
         if (!peliculasFavoritas.some(fav => fav.id === detalle.id)) {
             peliculasFavoritas.push({
@@ -93,6 +91,11 @@ export default function Detalle({ movieId, onClose }) {
             });
             localStorage.setItem('favoritos', JSON.stringify(peliculasFavoritas));
             alert("Película añadida a favoritos");
+            if (onFavoritoAgregado) {
+                onFavoritoAgregado();
+            }
+        } else {
+            alert("Esta película ya está en favoritos");
         }
     }
     
