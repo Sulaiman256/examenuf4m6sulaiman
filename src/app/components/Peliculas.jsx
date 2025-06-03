@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-export function Peliculas() {
+export function Peliculas({ onMovieClick, isCompact = false }) {
 
     const [peliculas, setPeliculas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -41,18 +41,17 @@ export function Peliculas() {
 
     useEffect(() => {
         fetchPeliculas();
-    }, [page]);
-
+    }, []);    
     return (
-        <div className="min-h-screen bg-gray-900 p-6">
-            <div className="max-w-6xl mx-auto">
-                <h1 className="text-white text-3xl font-bold mb-8 text-center">Películas y Series</h1>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="h-screen bg-gray-900 p-4 overflow-y-auto">
+            <div className="max-w-full">
+                <h1 className="text-white text-2xl font-bold mb-6 text-center">Películas Populares</h1>               
+                 <div className={`grid gap-4 ${isCompact ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'}`}>
                     {peliculas.map((movie) => (
                         <div
                             key={movie.id}
-                            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform transition-transform"
+                            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform transition-transform cursor-pointer"
+                            onClick={() => onMovieClick(movie.id)}
                         >
                             <div className="aspect-[2/3] bg-gradient-to-br from-gray-700 to-gray-600 relative">
                                 <img
@@ -62,14 +61,12 @@ export function Peliculas() {
                                 />
                             </div>
 
-
-                            <div className="p-4">
-                                <h3 className="text-white text-lg font-semibold mb-2">{movie.title}</h3>
+                            <div className="p-3">
+                                <h3 className="text-white text-sm font-semibold mb-1 line-clamp-2">{movie.title}</h3>
                                 <div className="flex items-center gap-1 mb-2">
-                                    <span className="text-yellow-400 text-sm font-medium">{movie.vote_average.toFixed(1)}</span>
-                                    <span className="text-gray-500 text-sm">({movie.release_date})</span>
+                                    <span className="text-yellow-400 text-xs font-medium">{movie.vote_average.toFixed(1)}</span>
+                                    <span className="text-gray-500 text-xs">({movie.release_date})</span>
                                 </div>
-
                             </div>
                         </div>
                     ))}
